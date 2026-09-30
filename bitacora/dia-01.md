@@ -75,10 +75,9 @@ Es un comando para configurar informacion general para todos los repositorios, p
 ## Ejercicios
 
 - Usar git log --oneline  / --graph
---oneline muestra en una sola linea los commits que se hicieron y --graph muestra autor fecha y los docs de los commits. 
-
-- Usar git diff --staged
---cuando lo probe no me mostro nada porque ya habia hecho los commits, pero entiendo que muestra las lineas de los cambios que se les hizo el add pero que no se ha hecho el commit. 
+ --oneline muestra en una sola linea los commits que se hicieron 
+ --graph le agrega un dibujo con asteriscos y líneas que muestra cómo se conectan los commits entre sí, pero como yo tengo una sola rama no se refleja mucho. 
+-- muestra las lineas de los cambios que se les hizo el add pero que no se ha hecho el commit. 
 
 - Usar git commit --amend 
 --lo use y corregi como mensaje de prueba en uno de los ultimos commits que realicé. 
