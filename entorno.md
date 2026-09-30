@@ -1,34 +1,17 @@
-\# Entorno de desarrollo
-
-
+# Entorno de desarrollo
 
 Fecha: 2026-09-30
 
+## Versiones instaladas
 
-
-\## Versiones instaladas
-
-
-
-| Herramienta | Estado / Versión |
-
+| Herramienta | Versión |
 |---|---|
-
 | Git | git version 2.56.0.windows.1 |
+| Node.js | v24.21.0 |
+| npm | (confirmar con npm -v) |
+| Python | Python 3.14.7 |
+| Docker | Docker version 29.8.1, build 4a63305 |
 
-| Node.js | No instalado |
+## Notas
 
-| npm | No instalado |
-
-| Python | No instalado |
-
-| Docker | No instalado |
-
-
-
-\## Notas
-
-
-
-Al día 1 del plan de inducción, solo Git ha sido instalado y configurado (incluyendo autenticación por llave SSH con GitHub). Las demás herramientas (Node.js, npm, Python, Docker) se instalarán según lo indique el plan en las próximas semanas.
-
+Todas las herramientas del entorno base quedaron instaladas y verificadas en el día 1. Docker requirió instalar WSL2 como requisito previo, y tanto npm como docker necesitaron reiniciar la terminal (o el sistema) para que el PATH reconociera los nuevos comandos.
