@@ -8,7 +8,7 @@ Fecha: 2026-09-30
 |---|---|
 | Git | git version 2.56.0.windows.1 |
 | Node.js | v24.21.0 |
-| npm | (confirmar con npm -v) |
+| npm | 11.19.0|
 | Python | Python 3.14.7 |
 | Docker | Docker version 29.8.1, build 4a63305 |
 
