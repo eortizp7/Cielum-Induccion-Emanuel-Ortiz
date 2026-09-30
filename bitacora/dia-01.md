@@ -1,17 +1,6 @@
-# 05 · Plantilla de Bitácora Diaria
-
-Copia esta plantilla en `bitacora/dia-XX.md` cada día (por ejemplo `bitacora/dia-03.md`) y llénala a lo largo de la jornada, no al final.
-
-**Reglas de la bitácora**
-- Responde con tus palabras. Una respuesta copiada de internet o de una IA vale 2.0.
-- Cada respuesta con un ejemplo propio, aunque sea pequeño.
-- Pon la fuente (enlace a la documentación oficial que usaste).
-- Se sube con commit `docs(bitacora): dia XX` antes de las 5:00 p.m.
-
----
 
 ```markdown
-# Bitácora Día 01 · [Tema]
+# Bitácora Día 01 · [Git básico]
 **Fecha:30 de Septiembre**
 **Horas invertidas:** autoinvestigación 2 h · práctica  1  h · reto 1 h
 
@@ -72,7 +61,9 @@ Es un comando para configurar informacion general para todos los repositorios, p
 -Que es SSH y como configurarla. Conventional commits y comandos generales de git. 
 
 ## Lo que no entendí o me costó
--
+
+-El orden en que se usan todos los comandos y memorizar cada comando. 
+
 ## Errores que tuve y cómo los resolví
 | Error | Causa | Solución |
 |Problemas al aplicar la SSH con power shell| Normalmente se hace en git bash |Consultando con la IA|
