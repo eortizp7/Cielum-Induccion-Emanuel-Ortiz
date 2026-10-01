@@ -1,4 +1,4 @@
-\# Cielum - Inducción Desarrollo
+# Cielum - Inducción Desarrollo (version feature)
 
 
 
@@ -6,7 +6,7 @@ Repositorio de práctica para el plan de inducción de 3 semanas en el área de 
 
 
 
-\## Autor
+## Autor
 
 
 
@@ -14,17 +14,17 @@ Emanuel Ortiz
 
 
 
-\## Contenido
+## Contenido
 
 
 
-\- `entorno.md`: registro de las versiones de herramientas instaladas en el entorno de desarrollo local.
+- `entorno.md`: registro de las versiones de herramientas instaladas en el entorno de desarrollo local.
 
-\- `bitacora/`: registro diario de actividades realizadas durante el plan de inducción.
+- `bitacora/`: registro diario de actividades realizadas durante el plan de inducción.
 
 
 
-\## Plan
+## Plan
 
 
 
