@@ -1,6 +1,6 @@
 # Bitácora Día 02 · [Git avanzado + JavaScript]
-**Fecha:1 de Octubre**
-**Horas invertidas:** autoinvestigación __ h · práctica __ h · reto __ h
+**Fecha: 1 de Octubre**
+**Horas invertidas:** autoinvestigación 4 h · práctica 3 h · reto 1 h
 
 ## Autoinvestigación básica
 1. Pregunta: Git: ¿qué es una rama? branch, switch/checkout, merge. ¿Qué es un conflicto y cómo se resuelve? ¿Qué es un Pull Request?
@@ -103,31 +103,25 @@ Se genero un conflicto en el archivo un titulo del archvio README y se corrigió
 
 ![Conflicto resuelto en README](imagenes/conflicto-git.png)
 
+## Ejercicio avanzado: git stash
 
+Edité esta misma bitácora dejándola a medias, guardé el cambio con
+git stash, cambié de rama, y recuperé el cambio con git stash pop. Confirmé con git status que el archivo volvió a aparecer como modificado, como lo había dejado.
 
 ## Lo que aprendí hoy 
 
+Comandos nuevos de Git, como solucionar conflictos. Sintaxis basica de JS y como usar algunas funciones. 
+
 ## Lo que no entendí o me costó
--
+
+Entender algunas diferencias con los comandos mas avanzados de Git. Tambien me costó entender como usar algunas funciones de los arreglos y algunas cosas de JS. 
+
 ## Errores que tuve y cómo los resolví
 | Error | Causa | Solución |
-|Problemas al aplicar la SSH con power shell| Normalmente se hace en git bash |Consultando con la IA|
+| Errores de ejecucion con JS| Causados por la sintaxis  | Corrigiendolos con IA|
+| Errores con comandos en la terminal | Causados por usar comando incorrectamente | Ejecutar los comandos en orden |
 
 ## Uso de IA hoy
-- Si, la use para todo el procesod de la SSH y su configuracion. Tambien para que me generar los archivos de repositorio, los textos. Aprendí a usar los comandos para el tema de las llaves y como configurarlo.  
+- Si, la use para acalarar dudas con algunos temas de JS, también la use para que me generar los ejercicios. Adicionalmente la use para generar el conflicto entre ramas y para ir solucionando dudas que me salian con el orden de la ejecucion de los comandos en la terminal, que aún me enredo sabiendo para qué es cada uno y en que orden usarlos. 
 
-
-## Ejercicios
-
-- Usar git log --oneline  / --graph
---oneline muestra en una sola linea los commits que se hicieron y --graph muestra autor fecha y los docs de los commits. 
-
-- Usar git diff --staged
---cuando lo probe no me mostro nada porque ya habia hecho los commits, pero entiendo que muestra las lineas de los cambios que se les hizo el add pero que no se ha hecho el commit. 
-
-- Usar git commit --amend 
---lo use y corregi como mensaje de prueba en uno de los ultimos commits que realicé. 
-
-
-## Autoevaluación del tema (1-5):
-```
+## Autoevaluación del tema (1-5): 4
