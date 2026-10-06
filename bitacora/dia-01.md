@@ -1,5 +1,3 @@
-
-```markdown
 # Bitácora Día 01 · [Git básico]
 **Fecha:30 de Septiembre**
 **Horas invertidas:** autoinvestigación 2 h · práctica  1  h · reto 1 h
@@ -66,6 +64,7 @@ Es un comando para configurar informacion general para todos los repositorios, p
 
 ## Errores que tuve y cómo los resolví
 | Error | Causa | Solución |
+|---|---|---|
 |Problemas al aplicar la SSH con power shell| Normalmente se hace en git bash |Consultando con la IA|
 
 ## Uso de IA hoy
