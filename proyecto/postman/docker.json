@@ -1,0 +1,22 @@
+{
+	"id": "14af9cfb-528a-4791-b185-6431f3cd31af",
+	"name": "Docker",
+	"values": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:3001",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"color": null,
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2026-10-09T17:00:21.331Z",
+	"_postman_exported_using": "Postman/12.31.7"
+}
