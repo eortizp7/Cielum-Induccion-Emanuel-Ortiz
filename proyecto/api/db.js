@@ -1,5 +1,8 @@
 require('dotenv').config();
-const { Pool } = require('pg');
+const { Pool, types } = require('pg');
+
+// timestamp sin zona (tipo 1114): el servidor guarda en UTC, se lee como UTC
+types.setTypeParser(1114, (valor) => new Date(valor + 'Z'));
 
 const pool = new Pool({
   host: process.env.DB_HOST,

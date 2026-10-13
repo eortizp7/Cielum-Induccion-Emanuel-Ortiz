@@ -1,24 +1,35 @@
 require('dotenv').config();
 const express = require('express');
-const { USUARIO, TOKEN } = require('./autenticacion');
+const cors = require('cors');
+const auth = require('./rutas/auth');
 const productos = require('./rutas/productos');
 const clientes = require('./rutas/clientes');
 const pedidos = require('./rutas/pedidos');
 
+// Sin estas variables la API no puede funcionar bien: mejor fallar al arrancar
+for (const nombre of ['JWT_SECRET', 'ADMIN_USUARIO', 'ADMIN_CLAVE']) {
+  if (!process.env[nombre]) {
+    console.error(`Falta la variable ${nombre} en el .env`);
+    process.exit(1);
+  }
+}
+
 const app = express();
+
+const origenes = (process.env.CORS_ORIGENES || '')
+  .split(',')
+  .map((o) => o.trim())
+  .filter(Boolean);
+app.use(cors({ origin: origenes }));
 app.use(express.json());
 
 app.get('/salud', (req, res) => {
   res.json({ estado: 'ok', fecha: new Date() });
 });
 
-app.post('/login', (req, res) => {
-  const { usuario, clave } = req.body || {};
-  if (usuario !== USUARIO.usuario || clave !== USUARIO.clave) {
-    return res.status(401).json({ error: 'Credenciales inválidas' });
-  }
-  res.json({ token: TOKEN });
-});
+app.use('/auth', auth.router);
+// Ruta antigua: se quita cuando la colección de Postman use /auth/login
+app.post('/login', auth.login);
 
 app.use('/productos', productos);
 app.use('/clientes', clientes);
