@@ -3,6 +3,7 @@ const express = require('express');
 const { USUARIO, TOKEN } = require('./autenticacion');
 const productos = require('./rutas/productos');
 const clientes = require('./rutas/clientes');
+const pedidos = require('./rutas/pedidos');
 
 const app = express();
 app.use(express.json());
@@ -21,6 +22,7 @@ app.post('/login', (req, res) => {
 
 app.use('/productos', productos);
 app.use('/clientes', clientes);
+app.use('/pedidos', pedidos);
 
 // Manejo de errores: nunca se exponen detalles internos
 app.use((err, req, res, next) => {
