@@ -28,8 +28,7 @@ app.get('/salud', (req, res) => {
 });
 
 app.use('/auth', auth.router);
-// Ruta antigua: se quita cuando la colección de Postman use /auth/login
-app.post('/login', auth.login);
+
 
 app.use('/productos', productos);
 app.use('/clientes', clientes);

@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:api": "newman run coleccion.json -e local.json --folder API -r cli,html --reporter-html-export reporte.html",
+    "test:docker": "newman run coleccion.json -e docker.json --folder API -r cli,html --reporter-html-export reporte.html",
+    "test:lote": "newman run coleccion.json -e local.json --folder Lote -d datos/productos.csv -r cli"
   },
   "keywords": [],
   "author": "",
