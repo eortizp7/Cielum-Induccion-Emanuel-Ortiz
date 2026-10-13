@@ -1,397 +1,1623 @@
 {
-  "info": {
-    "_postman_id": "11fea00a-66d9-41af-b1ba-92c2707ab299",
-    "name": "Inducción - API Cielum",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "58847107",
-    "_collection_link": "https://go.postman.co/collection/58847107-11fea00a-66d9-41af-b1ba-92c2707ab299?source=collection_link"
-  },
-  "item": [
-    {
-      "name": "Lote",
-      "item": [
-        {
-          "name": "Login (Lote)",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "const respuesta = pm.response.json();\r\npm.environment.set(\"token\", respuesta.token);\r\n\r\npm.test(\"Login: 200 y trae token\", function () {\r\n    pm.response.to.have.status(200);\r\n    pm.expect(respuesta).to.have.property(\"token\");\r\n});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n  \"usuario\": \"admin\",\r\n  \"clave\": \"admin123\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/login",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "login"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Crear Producto (Lote)",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Lote: 201 y trae id\", function () {\r\n    pm.response.to.have.status(201);\r\n    pm.expect(pm.response.json()).to.have.property(\"id\");\r\n});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n  \"nombre\": \"{{nombre}}\",\r\n  \"precio\": {{precio}},\r\n  \"stock\": {{stock}}\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/productos",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "productos"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "API",
-      "item": [
-        {
-          "name": "Login",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "const respuesta = pm.response.json();\r\npm.environment.set(\"token\", respuesta.token);\r\n\r\npm.test(\"Login: 200 y trae token\", function () {\r\n    pm.response.to.have.status(200);\r\n    pm.expect(respuesta).to.have.property(\"token\");\r\n});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n  \"usuario\": \"admin\",\r\n  \"clave\": \"admin123\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/login",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "login"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Salud",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Salud: 200 y estado ok\", function () {\r\n    pm.response.to.have.status(200);\r\n    pm.expect(pm.response.json().estado).to.equal(\"ok\");\r\n});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/salud",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "salud"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Listar Productos",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Listar: 200 y es un arreglo\", function () {\r\n    pm.response.to.have.status(200);\r\n    pm.expect(pm.response.json()).to.be.an(\"array\");\r\n});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/productos",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "productos"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Producto por ID",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Por id: 200 con nombre y precio\", function () {\r\n    pm.response.to.have.status(200);\r\n    pm.expect(pm.response.json()).to.have.property(\"nombre\");\r\n    pm.expect(pm.response.json().precio).to.be.a(\"number\");\r\n});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/productos/1",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "productos",
-                "1"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Producto no Existe",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"No existe: 404 con error\", function () {\r\n    pm.response.to.have.status(404);\r\n    pm.expect(pm.response.json()).to.have.property(\"error\");\r\n});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/productos/99",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "productos",
-                "99"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Crear Producto",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "const producto = pm.response.json();\r\npm.environment.set(\"producto_id\", producto.id);\r\n\r\npm.test(\"Crear: 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\npm.test(\"Crear: trae id, nombre y precio numérico\", function () {\r\n    pm.expect(producto).to.have.property(\"id\");\r\n    pm.expect(producto).to.have.property(\"nombre\");\r\n    pm.expect(producto.precio).to.be.a(\"number\");\r\n});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n  \"nombre\": \"Martillo demoledor\",\r\n  \"precio\": 320000,\r\n  \"stock\": 3\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/productos",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "productos"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Editar Producto",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Editar: 200 y nombre actualizado\", function () {\r\n    pm.response.to.have.status(200);\r\n    pm.expect(pm.response.json().nombre).to.equal(\"Martillo demoledor v2\");\r\n});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{ \"nombre\": \"Martillo demoledor v2\", \"precio\": 330000, \"stock\": 5 }",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/productos/{{producto_id}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "productos",
-                "{{producto_id}}"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Crear Producto Inválido",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Inválido: 400 con mensaje de error\", function () {\r\n    pm.response.to.have.status(400);\r\n    pm.expect(pm.response.json()).to.have.property(\"error\");\r\n});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{ \"nombre\": \"\", \"precio\": -5 }",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/productos",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "productos"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Eliminar Producto",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Eliminar: 204\", function () {\r\n    pm.response.to.have.status(204);\r\n});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/productos/{{producto_id}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "productos",
-                "{{producto_id}}"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    }
-  ],
-  "auth": {
-    "type": "bearer",
-    "bearer": [
-      {
-        "key": "token",
-        "value": "{{token}}",
-        "type": "string"
-      }
-    ]
-  }
+	"info": {
+		"_postman_id": "11fea00a-66d9-41af-b1ba-92c2707ab299",
+		"name": "Inducción - API Cielum",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "58847107",
+		"_collection_link": "https://go.postman.co/collection/58847107-11fea00a-66d9-41af-b1ba-92c2707ab299?source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Lote",
+			"item": [
+				{
+					"name": "Login (Lote)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const respuesta = pm.response.json();\r\npm.environment.set(\"token\", respuesta.token);\r\n\r\npm.test(\"Login: 200 y trae token\", function () {\r\n    pm.response.to.have.status(200);\r\n    pm.expect(respuesta).to.have.property(\"token\");\r\n});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"usuario\": \"admin\",\r\n  \"clave\": \"admin123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Producto (Lote)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Lote: 201 y trae id\", function () {\r\n    pm.response.to.have.status(201);\r\n    pm.expect(pm.response.json()).to.have.property(\"id\");\r\n});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"{{nombre}}\",\r\n  \"precio\": {{precio}},\r\n  \"stock\": {{stock}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/productos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "API",
+			"item": [
+				{
+					"name": "1. Sistema",
+					"item": [
+						{
+							"name": "Salud",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/salud",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"salud"
+									]
+								},
+								"auth": {
+									"type": "noauth"
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Salud: 200 y estado ok\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    pm.expect(pm.response.json().estado).to.equal(\"ok\");",
+											"});"
+										]
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "2. Auth",
+					"item": [
+						{
+							"name": "Login correcto",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/auth/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"usuario\": \"admin\",\n  \"clave\": \"admin123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"auth": {
+									"type": "noauth"
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Login: 200 con token Bearer\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    const r = pm.response.json();",
+											"    pm.expect(r.token).to.be.a(\"string\").and.not.empty;",
+											"    pm.expect(r.tipo).to.equal(\"Bearer\");",
+											"    pm.environment.set(\"token\", r.token);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Login con clave incorrecta",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/auth/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"usuario\": \"admin\",\n  \"clave\": \"incorrecta\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"auth": {
+									"type": "noauth"
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Clave incorrecta: 401 sin token\", function () {",
+											"    pm.response.to.have.status(401);",
+											"    const r = pm.response.json();",
+											"    pm.expect(r).to.have.property(\"error\");",
+											"    pm.expect(r).to.not.have.property(\"token\");",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Login sin datos",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/auth/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"auth": {
+									"type": "noauth"
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Login vacio: 400 con error\", function () {",
+											"    pm.response.to.have.status(400);",
+											"    pm.expect(pm.response.json()).to.have.property(\"error\");",
+											"});"
+										]
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "3. Productos",
+					"item": [
+						{
+							"name": "Listar productos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/productos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"productos"
+									]
+								},
+								"auth": {
+									"type": "noauth"
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Listar: 200 y arreglo con precio numerico\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    const lista = pm.response.json();",
+											"    pm.expect(lista).to.be.an(\"array\").that.is.not.empty;",
+											"    pm.expect(lista[0].precio).to.be.a(\"number\");",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Crear producto sin token",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/productos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"productos"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Sin token\",\n  \"precio\": 1000,\n  \"stock\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"auth": {
+									"type": "noauth"
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Crear sin token: 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"    pm.expect(pm.response.json()).to.have.property(\"error\");",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Crear producto",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/productos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"productos"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Producto Postman {{$timestamp}}\",\n  \"precio\": 12345.5,\n  \"stock\": 10\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"const producto = pm.response.json();",
+											"pm.test(\"Crear: 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"pm.test(\"Crear: trae id, precio numerico y stock 10\", function () {",
+											"    pm.expect(producto.id).to.be.a(\"number\");",
+											"    pm.expect(producto.precio).to.equal(12345.5);",
+											"    pm.expect(producto.stock).to.equal(10);",
+											"    pm.environment.set(\"producto_id\", producto.id);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Producto por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/productos/{{producto_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"productos",
+										"{{producto_id}}"
+									]
+								},
+								"auth": {
+									"type": "noauth"
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Por id: 200 y es el producto creado\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    pm.expect(pm.response.json().id).to.equal(Number(pm.environment.get(\"producto_id\")));",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Producto que no existe",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/productos/999999",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"productos",
+										"999999"
+									]
+								},
+								"auth": {
+									"type": "noauth"
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"No existe: 404 con error\", function () {",
+											"    pm.response.to.have.status(404);",
+											"    pm.expect(pm.response.json()).to.have.property(\"error\");",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Producto con ID no numerico",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/productos/abc",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"productos",
+										"abc"
+									]
+								},
+								"auth": {
+									"type": "noauth"
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"ID no numerico: 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Editar producto",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/productos/{{producto_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"productos",
+										"{{producto_id}}"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Producto Postman editado\",\n  \"precio\": 20000\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Editar: 200, nombre y precio nuevos, stock intacto\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    const p = pm.response.json();",
+											"    pm.expect(p.nombre).to.equal(\"Producto Postman editado\");",
+											"    pm.expect(p.precio).to.equal(20000);",
+											"    pm.expect(p.stock).to.equal(10);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Editar producto que no existe",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/productos/999999",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"productos",
+										"999999"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Fantasma\",\n  \"precio\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Editar inexistente: 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Crear producto sin nombre",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/productos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"productos"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"\",\n  \"precio\": 100\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Sin nombre: 400 con error\", function () {",
+											"    pm.response.to.have.status(400);",
+											"    pm.expect(pm.response.json()).to.have.property(\"error\");",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Crear producto con precio negativo",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/productos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"productos"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Precio malo\",\n  \"precio\": -5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Precio negativo: 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										]
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "4. Clientes",
+					"item": [
+						{
+							"name": "Listar clientes",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/clientes",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"clientes"
+									]
+								},
+								"auth": {
+									"type": "noauth"
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Listar clientes: 200 y arreglo con email\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    const lista = pm.response.json();",
+											"    pm.expect(lista).to.be.an(\"array\").that.is.not.empty;",
+											"    pm.expect(lista[0]).to.have.property(\"email\");",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Crear cliente sin token",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/clientes",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"clientes"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Sin token\",\n  \"email\": \"sin.token@prueba.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"auth": {
+									"type": "noauth"
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Crear cliente sin token: 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Crear cliente",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/clientes",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"clientes"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Cliente Postman\",\n  \"email\": \"{{email_cliente}}\",\n  \"telefono\": \"3001234567\",\n  \"ciudad\": \"Medellin\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.environment.set(\"email_cliente\", \"postman.\" + Date.now() + \"@prueba.com\");"
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Crear cliente: 201 con id y email\", function () {",
+											"    pm.response.to.have.status(201);",
+											"    const c = pm.response.json();",
+											"    pm.expect(c.id).to.be.a(\"number\");",
+											"    pm.expect(c.email).to.equal(pm.environment.get(\"email_cliente\"));",
+											"    pm.environment.set(\"cliente_id\", c.id);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Crear cliente con email repetido",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/clientes",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"clientes"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Repetido\",\n  \"email\": \"{{email_cliente}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Email repetido: 409 con error\", function () {",
+											"    pm.response.to.have.status(409);",
+											"    pm.expect(pm.response.json()).to.have.property(\"error\");",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Crear cliente con email invalido",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/clientes",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"clientes"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Mal email\",\n  \"email\": \"no-es-un-correo\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Email invalido: 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Crear cliente sin nombre",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/clientes",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"clientes"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"sin.nombre@prueba.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Sin nombre: 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										]
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "5. Pedidos",
+					"item": [
+						{
+							"name": "Listar pedidos sin token",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pedidos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedidos"
+									]
+								},
+								"auth": {
+									"type": "noauth"
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Pedidos sin token: 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Crear pedido",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pedidos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedidos"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"cliente_id\": {{cliente_id}},\n  \"items\": [{ \"producto_id\": {{producto_id}}, \"cantidad\": 2 }],\n  \"notas\": \"Pedido de prueba Postman\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"const pedido = pm.response.json();",
+											"pm.test(\"Crear pedido: 201 y estado pendiente\", function () {",
+											"    pm.response.to.have.status(201);",
+											"    pm.expect(pedido.estado).to.equal(\"pendiente\");",
+											"    pm.environment.set(\"pedido_id\", pedido.id);",
+											"});",
+											"pm.test(\"Crear pedido: total = 2 x 20000\", function () {",
+											"    pm.expect(pedido.items).to.have.lengthOf(1);",
+											"    pm.expect(pedido.items[0].precio_unitario).to.equal(20000);",
+											"    pm.expect(pedido.total).to.equal(40000);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Stock descontado tras el pedido",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/productos/{{producto_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"productos",
+										"{{producto_id}}"
+									]
+								},
+								"auth": {
+									"type": "noauth"
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Stock bajo de 10 a 8\", function () {",
+											"    pm.expect(pm.response.json().stock).to.equal(8);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Pedido con stock insuficiente",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pedidos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedidos"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"cliente_id\": {{cliente_id}},\n  \"items\": [{ \"producto_id\": {{producto_id}}, \"cantidad\": 9999 }]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Sin stock: 409 con mensaje\", function () {",
+											"    pm.response.to.have.status(409);",
+											"    pm.expect(pm.response.json().error).to.include(\"Stock insuficiente\");",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Stock intacto tras el rollback",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/productos/{{producto_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"productos",
+										"{{producto_id}}"
+									]
+								},
+								"auth": {
+									"type": "noauth"
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"El rechazo no toco el stock (sigue en 8)\", function () {",
+											"    pm.expect(pm.response.json().stock).to.equal(8);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Pedido con cliente inexistente",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pedidos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedidos"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"cliente_id\": 999999,\n  \"items\": [{ \"producto_id\": {{producto_id}}, \"cantidad\": 1 }]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Cliente inexistente: 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"    pm.expect(pm.response.json()).to.have.property(\"error\");",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Pedido con producto inexistente",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pedidos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedidos"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"cliente_id\": {{cliente_id}},\n  \"items\": [{ \"producto_id\": 999999, \"cantidad\": 1 }]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Producto inexistente: 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Pedido sin items",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pedidos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedidos"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"cliente_id\": {{cliente_id}},\n  \"items\": []\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Sin items: 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Pedido con cantidad negativa",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pedidos",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedidos"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"cliente_id\": {{cliente_id}},\n  \"items\": [{ \"producto_id\": {{producto_id}}, \"cantidad\": -1 }]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Cantidad negativa: 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Listar pedidos paginado",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pedidos?pagina=1&limite=5",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedidos"
+									],
+									"query": [
+										{
+											"key": "pagina",
+											"value": "1"
+										},
+										{
+											"key": "limite",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Paginado: 200, maximo 5 y trae totales\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    const r = pm.response.json();",
+											"    pm.expect(r.datos).to.be.an(\"array\");",
+											"    pm.expect(r.datos.length).to.be.at.most(5);",
+											"    pm.expect(r.limite).to.equal(5);",
+											"    pm.expect(r.total_registros).to.be.at.least(1);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Filtrar pedidos por estado",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pedidos?estado=pendiente",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedidos"
+									],
+									"query": [
+										{
+											"key": "estado",
+											"value": "pendiente"
+										}
+									]
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Filtro: todos son pendiente\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    const datos = pm.response.json().datos;",
+											"    pm.expect(datos.length).to.be.above(0);",
+											"    datos.forEach(p => pm.expect(p.estado).to.equal(\"pendiente\"));",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Listar con estado invalido",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pedidos?estado=volando",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedidos"
+									],
+									"query": [
+										{
+											"key": "estado",
+											"value": "volando"
+										}
+									]
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Estado invalido: 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Listar con limite invalido",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pedidos?limite=0",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedidos"
+									],
+									"query": [
+										{
+											"key": "limite",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Limite 0: 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Pedido por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pedidos/{{pedido_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedidos",
+										"{{pedido_id}}"
+									]
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Por id: 200 con cliente e items\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    const p = pm.response.json();",
+											"    pm.expect(p.id).to.equal(Number(pm.environment.get(\"pedido_id\")));",
+											"    pm.expect(p.cliente).to.equal(\"Cliente Postman\");",
+											"    pm.expect(p.items).to.have.lengthOf(1);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Pedido que no existe",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pedidos/999999",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedidos",
+										"999999"
+									]
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Pedido inexistente: 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});"
+										]
+									}
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "6. Limpieza",
+					"item": [
+						{
+							"name": "Eliminar producto",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/productos/{{producto_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"productos",
+										"{{producto_id}}"
+									]
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Eliminar: 204\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Producto eliminado ya no aparece",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/productos/{{producto_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"productos",
+										"{{producto_id}}"
+									]
+								},
+								"auth": {
+									"type": "noauth"
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Eliminado: 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Eliminar otra vez",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/productos/{{producto_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"productos",
+										"{{producto_id}}"
+									]
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Eliminar repetido: 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});"
+										]
+									}
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Responde en menos de 2 s\", function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+					"});"
+				]
+			}
+		}
+	]
 }
