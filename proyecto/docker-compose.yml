@@ -1,0 +1,51 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: tienda
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ../semana-1/sql/modelo_postgres.sql:/docker-entrypoint-initdb.d/01-modelo.sql:ro
+      - ../semana-1/sql/datos.sql:/docker-entrypoint-initdb.d/02-datos.sql:ro
+      - ../semana-2/sql-avanzado/01_vistas_postgres.sql:/docker-entrypoint-initdb.d/03-vistas.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U postgres -d tienda"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqldata:/var/opt/mssql
+
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+
+  api:
+    build: ./api
+    env_file: ./api/.env
+    environment:
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3001:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  sqldata:
