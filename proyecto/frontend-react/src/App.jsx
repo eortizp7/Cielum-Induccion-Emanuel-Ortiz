@@ -1,6 +1,7 @@
 import { Link, Navigate, Route, Routes } from 'react-router-dom';
 import Layout from './components/Layout.jsx';
 import RutaProtegida from './components/RutaProtegida.jsx';
+import Ejercicios from './pages/Ejercicios.jsx';
 import Login from './pages/Login.jsx';
 import NuevoPedido from './pages/NuevoPedido.jsx';
 import PedidoDetalle from './pages/PedidoDetalle.jsx';
@@ -29,6 +30,7 @@ export default function App() {
           <Route path="/pedidos" element={<Pedidos />} />
           <Route path="/pedidos/nuevo" element={<NuevoPedido />} />
           <Route path="/pedidos/:id" element={<PedidoDetalle />} />
+          <Route path="/ejercicios" element={<Ejercicios />} />
           <Route path="*" element={<NoEncontrada />} />
         </Route>
       </Route>

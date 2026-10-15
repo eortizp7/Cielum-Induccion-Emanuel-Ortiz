@@ -42,7 +42,8 @@ src/
   hooks/useApi.js     fetch con token y manejo de 401
   hooks/useDatos.js   GET con cargando / error / recargar
   components/         Layout, RutaProtegida, Paginacion, EstadoBadge, FlujoEstado, Aviso
-  pages/              Login, Pedidos, NuevoPedido, PedidoDetalle
+  pages/              Login, Pedidos, NuevoPedido, PedidoDetalle, Ejercicios
+  ejercicios/         Contador, ListaTareas, FormularioControlado, TablaProductos, ProbarApi (Día 11)
   utils/formato.js    moneda y fechas
 ```
 
