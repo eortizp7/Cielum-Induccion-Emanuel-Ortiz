@@ -177,4 +177,23 @@ router.get('/:id', async (req, res) => {
   res.json({ ...pedido.rows[0], total: Math.round(total * 100) / 100, items: items.rows });
 });
 
+// Cambiar el estado de un pedido: PATCH /pedidos/:id/estado  { "estado": "pagado" }
+router.patch('/:id/estado', async (req, res) => {
+  const id = Number(req.params.id);
+  if (!entero(id)) return res.status(404).json({ error: 'Pedido no encontrado' });
+
+  const { estado } = req.body || {};
+  if (!ESTADOS.includes(estado)) {
+    return res.status(400).json({ error: `estado debe ser uno de: ${ESTADOS.join(', ')}` });
+  }
+
+  const { rows } = await pool.query(
+    `UPDATE pedidos SET estado = $1 WHERE id = $2
+     RETURNING id, cliente_id, estado, fecha_pedido, notas`,
+    [estado, id]
+  );
+  if (rows.length === 0) return res.status(404).json({ error: 'Pedido no encontrado' });
+  res.json(rows[0]);
+});
+
 module.exports = router;

@@ -1490,6 +1490,208 @@
 									}
 								}
 							]
+						},
+						{
+							"name": "Cambiar estado a pagado",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pedidos/{{pedido_id}}/estado",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedidos",
+										"{{pedido_id}}",
+										"estado"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"estado\": \"pagado\" }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Cambiar estado: 200 y queda pagado\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    const p = pm.response.json();",
+											"    pm.expect(p.id).to.equal(Number(pm.environment.get(\"pedido_id\")));",
+											"    pm.expect(p.estado).to.equal(\"pagado\");",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Estado guardado en el pedido",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pedidos/{{pedido_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedidos",
+										"{{pedido_id}}"
+									]
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"El detalle muestra el estado nuevo\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    pm.expect(pm.response.json().estado).to.equal(\"pagado\");",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Cambiar estado a uno invalido",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pedidos/{{pedido_id}}/estado",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedidos",
+										"{{pedido_id}}",
+										"estado"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"estado\": \"volando\" }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Estado invalido: 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Cambiar estado de pedido que no existe",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pedidos/999999/estado",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedidos",
+										"999999",
+										"estado"
+									]
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"estado\": \"pagado\" }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Pedido inexistente: 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});"
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Cambiar estado sin token",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/pedidos/{{pedido_id}}/estado",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"pedidos",
+										"{{pedido_id}}",
+										"estado"
+									]
+								},
+								"auth": {
+									"type": "noauth"
+								},
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"estado\": \"pagado\" }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								}
+							},
+							"response": [],
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Sin token: 401\", function () {",
+											"    pm.response.to.have.status(401);",
+											"});"
+										]
+									}
+								}
+							]
 						}
 					]
 				},
