@@ -21,6 +21,7 @@ export default function Layout() {
             <NavLink to="/pedidos/nuevo" end>
               Nuevo pedido
             </NavLink>
+            <NavLink to="/ejercicios">Ejercicios</NavLink>
           </nav>
           <div className="barra__sesion">
             <span>{usuario}</span>
