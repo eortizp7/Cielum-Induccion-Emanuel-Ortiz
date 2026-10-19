@@ -1,0 +1,401 @@
+{
+  "info": {
+    "name": "zoho-crm",
+    "description": "Leads en Zoho CRM por API. Sin tokens reales: llena las variables de la colección (client_id, client_secret, grant_code o refresh_token). El access token se renueva solo.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "accounts_url",
+      "value": "https://accounts.zoho.com"
+    },
+    {
+      "key": "api_domain",
+      "value": "https://www.zohoapis.com"
+    },
+    {
+      "key": "api_version",
+      "value": "v8"
+    },
+    {
+      "key": "client_id",
+      "value": ""
+    },
+    {
+      "key": "client_secret",
+      "value": ""
+    },
+    {
+      "key": "grant_code",
+      "value": ""
+    },
+    {
+      "key": "refresh_token",
+      "value": ""
+    },
+    {
+      "key": "access_token",
+      "value": ""
+    },
+    {
+      "key": "token_expires_at",
+      "value": "0"
+    },
+    {
+      "key": "lead_id",
+      "value": ""
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Renueva el access token solo cuando hace falta (dura 1 hora)",
+          "const v = (k) => pm.collectionVariables.get(k);",
+          "const vence = Number(v('token_expires_at') || 0);",
+          "const hayRefresh = Boolean(v('refresh_token'));",
+          "const vigente = v('access_token') && Date.now() < vence - 60000;",
+          "if (hayRefresh && !vigente) {",
+          "  pm.sendRequest({",
+          "    url: v('accounts_url') + '/oauth/v2/token',",
+          "    method: 'POST',",
+          "    header: { 'Content-Type': 'application/x-www-form-urlencoded' },",
+          "    body: { mode: 'urlencoded', urlencoded: [",
+          "      { key: 'grant_type', value: 'refresh_token' },",
+          "      { key: 'refresh_token', value: v('refresh_token') },",
+          "      { key: 'client_id', value: v('client_id') },",
+          "      { key: 'client_secret', value: v('client_secret') },",
+          "    ] },",
+          "  }, (err, res) => {",
+          "    if (err || res.code !== 200 || !res.json().access_token) {",
+          "      console.log('No se pudo renovar el token', err || res.text());",
+          "      return;",
+          "    }",
+          "    const j = res.json();",
+          "    pm.collectionVariables.set('access_token', j.access_token);",
+          "    pm.collectionVariables.set('token_expires_at', String(Date.now() + j.expires_in * 1000));",
+          "    console.log('Access token renovado');",
+          "  });",
+          "}"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "0. Obtener tokens (solo una vez, con el código del Self Client)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded"
+          }
+        ],
+        "url": {
+          "raw": "{{accounts_url}}/oauth/v2/token",
+          "host": [
+            "{{accounts_url}}"
+          ],
+          "path": [
+            "oauth",
+            "v2",
+            "token"
+          ]
+        },
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "grant_type",
+              "value": "authorization_code"
+            },
+            {
+              "key": "client_id",
+              "value": "{{client_id}}"
+            },
+            {
+              "key": "client_secret",
+              "value": "{{client_secret}}"
+            },
+            {
+              "key": "code",
+              "value": "{{grant_code}}"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const j = pm.response.json();",
+              "pm.test('Respondió 200 y trae refresh_token', () => { pm.response.to.have.status(200); pm.expect(j.refresh_token).to.be.a('string'); });",
+              "if (j.access_token) {",
+              "  pm.collectionVariables.set('access_token', j.access_token);",
+              "  pm.collectionVariables.set('refresh_token', j.refresh_token);",
+              "  pm.collectionVariables.set('token_expires_at', String(Date.now() + j.expires_in * 1000));",
+              "  if (j.api_domain) pm.collectionVariables.set('api_domain', j.api_domain);",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "1. Crear lead",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Zoho-oauthtoken {{access_token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{api_domain}}/crm/{{api_version}}/Leads",
+          "host": [
+            "{{api_domain}}"
+          ],
+          "path": [
+            "crm",
+            "{{api_version}}",
+            "Leads"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"data\": [\n    {\n      \"Last_Name\": \"Prueba Postman\",\n      \"Company\": \"Cielum\",\n      \"Email\": \"prueba.postman@example.com\",\n      \"Lead_Source\": \"Web\"\n    }\n  ]\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const j = pm.response.json();",
+              "pm.test('Lead creado (201)', () => pm.response.to.have.status(201));",
+              "pm.test('Estado SUCCESS', () => pm.expect(j.data[0].status).to.eql('success'));",
+              "pm.collectionVariables.set('lead_id', j.data[0].details.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Consultar lead por id",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Zoho-oauthtoken {{access_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{api_domain}}/crm/{{api_version}}/Leads/{{lead_id}}",
+          "host": [
+            "{{api_domain}}"
+          ],
+          "path": [
+            "crm",
+            "{{api_version}}",
+            "Leads",
+            "{{lead_id}}"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+              "pm.test('Trae el lead', () => pm.expect(pm.response.json().data[0].id).to.eql(pm.collectionVariables.get('lead_id')));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Listar leads",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Zoho-oauthtoken {{access_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{api_domain}}/crm/{{api_version}}/Leads?fields=Last_Name,Company,Email,Lead_Source&per_page=10",
+          "host": [
+            "{{api_domain}}"
+          ],
+          "path": [
+            "crm",
+            "{{api_version}}",
+            "Leads"
+          ],
+          "query": [
+            {
+              "key": "fields",
+              "value": "Last_Name,Company,Email,Lead_Source"
+            },
+            {
+              "key": "per_page",
+              "value": "10"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Responde 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Actualizar lead",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Zoho-oauthtoken {{access_token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{api_domain}}/crm/{{api_version}}/Leads/{{lead_id}}",
+          "host": [
+            "{{api_domain}}"
+          ],
+          "path": [
+            "crm",
+            "{{api_version}}",
+            "Leads",
+            "{{lead_id}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"data\": [\n    {\n      \"Company\": \"Cielum (actualizado)\"\n    }\n  ]\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+              "pm.test('Estado SUCCESS', () => pm.expect(pm.response.json().data[0].status).to.eql('success'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Buscar leads por email",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Zoho-oauthtoken {{access_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{api_domain}}/crm/{{api_version}}/Leads/search?email=prueba.postman@example.com",
+          "host": [
+            "{{api_domain}}"
+          ],
+          "path": [
+            "crm",
+            "{{api_version}}",
+            "Leads",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "email",
+              "value": "prueba.postman@example.com"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Responde 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Buscar leads por criterio (apellido)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Zoho-oauthtoken {{access_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{api_domain}}/crm/{{api_version}}/Leads/search?criteria=(Last_Name:equals:Prueba Postman)",
+          "host": [
+            "{{api_domain}}"
+          ],
+          "path": [
+            "crm",
+            "{{api_version}}",
+            "Leads",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "criteria",
+              "value": "(Last_Name:equals:Prueba Postman)"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Responde 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
