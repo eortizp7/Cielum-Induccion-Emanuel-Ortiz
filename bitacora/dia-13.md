@@ -1,7 +1,7 @@
 # Bitácora Día 13 · \[Zoho CRM: configuración y API]
 
-**Fecha: 19 de Octubre
-Horas invertidas:** autoinvestigación 3 h · práctica 2 h · reto 2 h
+**Fecha: 19 de Octubre**
+**Horas invertidas:** autoinvestigación 3 h · práctica 2 h · reto 2 h
 
 ## Autoinvestigación básica
 
@@ -31,29 +31,68 @@ Un webhook avisa a otro sistema por HTTP cuando pasa algo en el CRM. La API tien
 
 ## Ejercicios
 
-* Básico: cuenta de prueba y 10 leads (5 a mano y 5 por CSV).
-* Intermedio: campo "Origen Cielum", vista filtrada y workflow que crea una tarea cuando el origen es Web.
-* Avanzado: Self Client, tokens y colección de Postman (crear, consultar, actualizar, buscar) con renovación automática del token.
-* Evidencia en `proyecto/zoho/configuracion.md`.
-La función Deluge quedó documentada pero no se pudo ejecutar porque la edición de la cuenta no la incluye.
+### Básico: cuenta de prueba y 10 leads
+Creé la cuenta de prueba de Zoho CRM y cargué 10 leads ficticios: 5 a mano y 5 importando el CSV `proyecto/zoho/leads.csv`.
+
+![Lista de leads](../proyecto/zoho/capturas/01-leads.png)
+
+### Intermedio
+**Campo personalizado "Origen Cielum"** (lista: Web, Referido, Evento), agregado al layout de Leads.
+
+![Campo Origen Cielum](../proyecto/zoho/capturas/02-campo-origen.png)
+
+**Vista filtrada "Leads Web"** (Origen Cielum = Web).
+
+![Vista filtrada](../proyecto/zoho/capturas/03-vista.png)
+
+**Workflow:** módulo Leads, al crear un registro, condición Origen Cielum = Web, acción: tarea "Contactar lead web" asignada al dueño del lead.
+
+![Workflow](../proyecto/zoho/capturas/04-workflow.png)
+
+![Tarea creada por el workflow](../proyecto/zoho/capturas/05-tarea.png)
+
+### Avanzado: API con Postman
+Creé un Self Client en api-console.zoho.com, cambié el grant code por los tokens y armé la colección `proyecto/zoho/zoho-crm.postman_collection.json` (sin tokens reales, todo en variables). Un script *pre-request* renueva el access token con el refresh token cuando vence.
+
+Peticiones: 0 obtener tokens, 1 crear lead, 2 consultar por id, 3 listar, 4 actualizar, 5 buscar por email, 6 buscar por criterio. Todos los tests pasan.
+
+![Postman con las peticiones](../proyecto/zoho/capturas/06-postman.png)
+
+### Función Deluge
+Cuando se crea un Deal, copia su nombre en la descripción del Contact asociado. **Quedó documentada pero no ejecutada:** la edición gratuita no permite funciones personalizadas (solo correo y tarea como acciones instantáneas).
+
+![Acciones instantáneas disponibles: solo correo y tarea](../proyecto/zoho/capturas/07-sin-funciones.png)
+
+```deluge
+// Argumento: dealId (ID del Deal)
+deal = zoho.crm.getRecordById("Deals", dealId);
+contacto = deal.get("Contact_Name");
+if(contacto != null)
+{
+    contactoId = contacto.get("id");
+    cambios = Map();
+    cambios.put("Description", "Último deal: " + deal.get("Deal_Name"));
+    respuesta = zoho.crm.updateRecord("Contacts", contactoId, cambios);
+    info respuesta;
+}
+return "";
+```
+
+Evidencia completa en `proyecto/zoho/configuracion.md`.
 
 ## Lo que aprendí hoy
 
-
-
 ## Lo que no entendí o me costó
-
-
 
 ## Errores que tuve y cómo los resolví
 
-|Error|Causa|Solución|
-|-|-|-|
-||||
+| Error | Causa | Solución |
+|---|---|---|
+| Postman mostró "Secrets Detected" al guardar | Detecta variables que parecen credenciales | Elegí Override; en la colección las variables van vacías |
+| No encontraba "Funciones" en Zoho | La edición gratuita no incluye funciones personalizadas (Deluge) | Documenté la función y dejé captura como evidencia |
+| Capturas con nombre `.png` | Windows agregó la extensión al guardar | `Rename-Item` en PowerShell para quitar la extensión repetida |
 
 ## Uso de IA hoy
-
 Sí, la usé para armar la colección de Postman, el esqueleto de la documentación y revisar conceptos de la API.
 
 ## Autoevaluación del tema (1-5): 4
-
