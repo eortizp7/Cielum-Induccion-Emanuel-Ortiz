@@ -1,0 +1,104 @@
+{
+  "name": "Basico HTTP a archivo",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "a5352c59-0628-5b02-a206-552778cb9dbf",
+      "name": "Ejecutar manualmente",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "http://api:3000/productos",
+        "options": {}
+      },
+      "id": "aab60842-fdb7-5699-9669-8497a10d0cce",
+      "name": "Pedir productos a la API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "mode": "once",
+        "options": {
+          "fileName": "productos.json"
+        }
+      },
+      "id": "65ac67ae-c6ea-56f4-be02-612a2b0d41da",
+      "name": "Convertir a archivo",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "/files/productos.json",
+        "dataPropertyName": "data",
+        "options": {}
+      },
+      "id": "6088a783-1d80-5797-b7ca-4c848d836b27",
+      "name": "Guardar archivo",
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        660,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Ejecutar manualmente": {
+      "main": [
+        [
+          {
+            "node": "Pedir productos a la API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pedir productos a la API": {
+      "main": [
+        [
+          {
+            "node": "Convertir a archivo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convertir a archivo": {
+      "main": [
+        [
+          {
+            "node": "Guardar archivo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}
