@@ -1,0 +1,58 @@
+{
+  "name": "Aviso de error por correo",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "f25ba6c0-43ad-5c6f-ac48-ef00e4bdbe5b",
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "n8n@tienda.local",
+        "toEmail": "={{ $env.NOTIFICACION_CORREO_DESTINO }}",
+        "subject": "={{ '[n8n] Falló el flujo: ' + $json.workflow.name }}",
+        "emailFormat": "text",
+        "text": "={{ 'Flujo: ' + $json.workflow.name + '\\nEjecución: ' + $json.execution.id + '\\nÚltimo nodo: ' + $json.execution.lastNodeExecuted + '\\nError: ' + ($json.execution.error ? $json.execution.error.message : 'sin mensaje') + '\\nVer en n8n: ' + $json.execution.url }}",
+        "options": {}
+      },
+      "id": "319b5df7-588c-5a3f-af4a-5f967f10b857",
+      "name": "Avisar por correo",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        0
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "REEMPLAZAR",
+          "name": "SMTP Mailpit"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Avisar por correo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}

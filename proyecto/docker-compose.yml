@@ -11,6 +11,7 @@ services:
       - ../semana-1/sql/modelo_postgres.sql:/docker-entrypoint-initdb.d/01-modelo.sql:ro
       - ../semana-1/sql/datos.sql:/docker-entrypoint-initdb.d/02-datos.sql:ro
       - ../semana-2/sql-avanzado/01_vistas_postgres.sql:/docker-entrypoint-initdb.d/03-vistas.sql:ro
+      - ./n8n/log_integraciones.sql:/docker-entrypoint-initdb.d/04-log-integraciones.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U postgres -d tienda"]
       interval: 10s
@@ -40,6 +41,9 @@ services:
       DB_HOST: postgres
       DB_PORT: "5432"
       DB_PASSWORD: ${DB_PASSWORD}
+      # Dentro de la red de Docker n8n se llama por el nombre del servicio, no por localhost
+      PEDIDOS_WEBHOOK_URL: http://n8n:5678/webhook/pedido
+      PEDIDOS_WEBHOOK_SECRET: ${PEDIDOS_WEBHOOK_SECRET:?Falta PEDIDOS_WEBHOOK_SECRET en proyecto/.env}
     ports:
       - "3001:3000"
     depends_on:
@@ -50,13 +54,60 @@ services:
     build:
       context: ./frontend-react
       args:
-        # Dirección de la API vista desde el navegador (por eso es localhost:3001 y no api:3000)
+        # DirecciÃƒÂ³n de la API vista desde el navegador (por eso es localhost:3001 y no api:3000)
         VITE_API_URL: ${VITE_API_URL:-http://localhost:3001}
     ports:
       - "5173:80"
     depends_on:
       - api
 
+  # AutomatizaciÃƒÂ³n: recibe el webhook de la API y sincroniza con Zoho CRM
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:${N8N_VERSION:-latest}
+    environment:
+      GENERIC_TIMEZONE: America/Bogota
+      TZ: America/Bogota
+      N8N_HOST: localhost
+      N8N_PORT: "5678"
+      N8N_PROTOCOL: http
+      # URL pÃƒÂºblica que n8n muestra para los webhooks (la que ve tu navegador)
+      N8N_WEBHOOK_URL: http://localhost:5678/
+      WEBHOOK_URL: http://localhost:5678/   # nombre anterior; se deja por compatibilidad con versiones viejas
+      # Cifra las credenciales guardadas. Si la cambias, se pierden las credenciales ya creadas
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY:?Falta N8N_ENCRYPTION_KEY en proyecto/.env}
+      # Los flujos leen estos valores con $env.NOMBRE, asÃƒÂ­ no quedan escritos en el JSON
+      N8N_BLOCK_ENV_ACCESS_IN_NODE: "false"
+      PEDIDOS_WEBHOOK_SECRET: ${PEDIDOS_WEBHOOK_SECRET:?Falta PEDIDOS_WEBHOOK_SECRET en proyecto/.env}
+      ZOHO_ACCOUNTS_URL: ${ZOHO_ACCOUNTS_URL:-https://accounts.zoho.com}
+      ZOHO_API_DOMAIN: ${ZOHO_API_DOMAIN:-https://www.zohoapis.com}
+      ZOHO_API_VERSION: ${ZOHO_API_VERSION:-v8}
+      ZOHO_CLIENT_ID: ${ZOHO_CLIENT_ID:-}
+      ZOHO_CLIENT_SECRET: ${ZOHO_CLIENT_SECRET:-}
+      ZOHO_REFRESH_TOKEN: ${ZOHO_REFRESH_TOKEN:-}
+      NOTIFICACION_CORREO_DESTINO: ${NOTIFICACION_CORREO_DESTINO:-equipo@tienda.local}
+      # Los nodos de archivos solo pueden leer y escribir en /files
+      N8N_RESTRICT_FILE_ACCESS_TO: /files
+    ports:
+      - "5678:5678"
+    volumes:
+      - n8ndata:/home/node/.n8n
+      - ./n8n/salida:/files
+    depends_on:
+      postgres:
+        condition: service_healthy
+      api:
+        condition: service_started
+
+  # BuzÃƒÂ³n de pruebas: recibe los correos de n8n sin enviarlos a nadie (interfaz en :8025)
+  mailpit:
+    image: axllent/mailpit
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: "1"
+      MP_SMTP_AUTH_ALLOW_INSECURE: "1"
+    ports:
+      - "8025:8025"
+
 volumes:
   pgdata:
   sqldata:
+  n8ndata:

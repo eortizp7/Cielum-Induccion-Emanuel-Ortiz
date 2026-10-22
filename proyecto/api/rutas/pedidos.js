@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const pool = require('../db');
 const { requiereToken } = require('../autenticacion');
+const { notificarPedido } = require('../integraciones');
 
 const router = Router();
 router.use(requiereToken);
@@ -53,7 +54,7 @@ router.post('/', async (req, res) => {
     await client.query('BEGIN');
 
     const cliente = await client.query(
-      'SELECT id FROM clientes WHERE id = $1 AND activo = true', [cliente_id]
+      'SELECT id, nombre, email, telefono, ciudad FROM clientes WHERE id = $1 AND activo = true', [cliente_id]
     );
     if (cliente.rowCount === 0) throw new ErrorNegocio(404, 'Cliente no encontrado');
 
@@ -96,11 +97,14 @@ router.post('/', async (req, res) => {
 
     await client.query('COMMIT');
     const total = detalle.reduce((suma, d) => suma + d.cantidad * d.precio_unitario, 0);
-    res.status(201).json({
+    const creado = {
       ...pedido.rows[0],
       total: Math.round(total * 100) / 100,
       items: detalle,
-    });
+    };
+    res.status(201).json(creado);
+    // Después de responder y sin esperar: si n8n falla, el pedido ya quedó guardado
+    void notificarPedido({ pedido: creado, cliente: cliente.rows[0] });
   } catch (err) {
     await client.query('ROLLBACK');
     if (err instanceof ErrorNegocio) return res.status(err.status).json({ error: err.message });
