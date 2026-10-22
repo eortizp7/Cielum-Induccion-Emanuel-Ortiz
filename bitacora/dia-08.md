@@ -1,4 +1,4 @@
-# Bitácora Día 04 · [Postman (y alternativas)]
+# Bitácora Día 08 · [Postman (y alternativas)]
 **Fecha: 9 de Octubre**
 **Horas invertidas:** autoinvestigación  2 h · práctica  h · reto  h
 
