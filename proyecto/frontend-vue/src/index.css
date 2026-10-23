@@ -1,0 +1,758 @@
+/* Paleta: grafito, naranja de seguridad y cuatro colores solo para los estados del pedido */
+:root {
+  --fondo: #15171a;
+  --panel: #1c1f23;
+  --campo: #111316;
+  --linea: #2d3136;
+  --linea-fuerte: #4a5057;
+  --tinta: #efeee9;
+  --tinta-suave: #9aa0a8;
+  --naranja: #ff7a2f;
+  --naranja-claro: #ffa062;
+  --sobre-naranja: #15171a;
+  --foco: #7dc0ff;
+
+  color-scheme: dark;
+  font-family: 'Bricolage Grotesque Variable', 'Segoe UI', system-ui, sans-serif;
+  line-height: 1.5;
+  color: var(--tinta);
+  background: var(--fondo);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+h1,
+h2 {
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+h1 {
+  margin: 0 0 1rem;
+  font-size: clamp(2.4rem, 6vw, 3.9rem);
+  font-weight: 700;
+  font-stretch: 90%;
+}
+/* El número de pedido: es lo que la gente busca primero */
+h1 .num-h1 {
+  color: var(--naranja);
+}
+h2 {
+  margin: 2.5rem 0 0.9rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+a {
+  color: var(--naranja-claro);
+  text-underline-offset: 0.2em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--foco);
+  outline-offset: 3px;
+}
+
+/* ---------- Barra superior ---------- */
+.barra__contenido {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 1.3rem 1.5rem;
+}
+.marca {
+  color: var(--tinta);
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: -0.03em;
+  text-decoration: none;
+}
+.marca::after {
+  content: '/pedidos';
+  color: var(--naranja);
+}
+.barra__nav {
+  display: flex;
+  gap: 0.25rem;
+  flex: 1;
+}
+.barra__nav a {
+  padding: 0.4rem 0.9rem;
+  color: var(--tinta-suave);
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 999px;
+}
+.barra__nav a:hover {
+  color: var(--tinta);
+}
+.barra__nav a.activo {
+  color: var(--tinta);
+  font-weight: 700;
+  background: var(--panel);
+  box-shadow: inset 0 0 0 1px var(--linea-fuerte);
+}
+.barra__sesion {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--tinta-suave);
+}
+.barra .boton--texto {
+  color: var(--tinta);
+}
+
+/* ---------- Páginas ---------- */
+.pagina {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 4rem;
+}
+.encabezado {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.encabezado h1 {
+  margin: 0;
+}
+.migas {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+}
+.vacio {
+  padding: 2rem 0;
+  color: var(--tinta-suave);
+}
+.vacio p {
+  margin: 0 0 0.75rem;
+}
+.ayuda {
+  margin: -0.4rem 0 1.5rem;
+  color: var(--tinta-suave);
+  font-size: 1.1rem;
+}
+
+/* ---------- Botones ---------- */
+.boton {
+  display: inline-block;
+  padding: 0.55rem 1.2rem;
+  font: inherit;
+  font-weight: 600;
+  color: var(--tinta);
+  text-decoration: none;
+  text-align: center;
+  background: transparent;
+  border: 1px solid var(--linea-fuerte);
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
+}
+.boton:hover:not(:disabled) {
+  background: var(--panel);
+  border-color: var(--tinta-suave);
+}
+.boton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.boton--primario {
+  color: var(--sobre-naranja);
+  font-weight: 700;
+  background: var(--naranja);
+  border-color: var(--naranja);
+}
+.boton--primario:hover:not(:disabled) {
+  background: var(--naranja-claro);
+  border-color: var(--naranja-claro);
+}
+.boton--texto {
+  padding: 0.35rem 0.5rem;
+  border-color: transparent;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.boton--texto:hover:not(:disabled) {
+  background: transparent;
+  border-color: transparent;
+}
+
+/* ---------- Formularios ---------- */
+label {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--tinta-suave);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+input,
+select {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  font: inherit;
+  color: var(--tinta);
+  background: var(--campo);
+  border: 1px solid var(--linea-fuerte);
+  border-radius: 10px;
+}
+input:focus,
+select:focus {
+  border-color: var(--naranja);
+}
+.campo {
+  margin-bottom: 1rem;
+}
+.formulario {
+  max-width: 46rem;
+}
+.lineas {
+  margin: 0 0 1.5rem;
+  padding: 1.1rem 1.25rem 0.4rem;
+  background: var(--panel);
+  border: 1px solid var(--linea);
+  border-radius: 18px;
+}
+.lineas legend {
+  padding: 0 0.5rem;
+  color: var(--naranja-claro);
+  font-weight: 700;
+}
+.lineas > .boton {
+  margin-bottom: 0.9rem;
+}
+.linea {
+  display: grid;
+  grid-template-columns: 1fr 7rem 8rem auto;
+  gap: 0.75rem;
+  align-items: end;
+}
+.linea__subtotal {
+  margin: 0 0 1rem;
+  padding: 0.55rem 0;
+  min-height: 2.5rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.linea .boton--texto {
+  margin-bottom: 1rem;
+}
+.resumen {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--linea);
+}
+.resumen p {
+  margin: 0;
+  color: var(--tinta-suave);
+}
+.resumen strong {
+  display: block;
+  color: var(--naranja);
+  font-size: 2.4rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.acciones {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ---------- Filtros y tabla ---------- */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+.filtros select {
+  min-width: 11rem;
+}
+/* La tabla es un panel con una pestaña naranja arriba, como la etiqueta de una carpeta */
+.tabla-contenedor {
+  position: relative;
+  overflow-x: auto;
+  padding: 0.5rem 0.5rem 0.25rem;
+  background: var(--panel);
+  border: 1px solid var(--linea);
+  border-radius: 18px;
+}
+.tabla-contenedor::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 1.4rem;
+  width: 3.5rem;
+  height: 4px;
+  background: var(--naranja);
+  border-radius: 0 0 4px 4px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+th,
+td {
+  padding: 0.9rem 1rem;
+  text-align: left;
+  white-space: nowrap;
+}
+thead th {
+  color: var(--tinta-suave);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-bottom: 1px solid var(--linea);
+}
+tbody td {
+  border-top: 1px solid var(--linea);
+}
+tbody tr:first-child td {
+  border-top: 0;
+}
+tbody tr:hover td {
+  background: rgb(255 255 255 / 0.035);
+}
+tbody td:first-child {
+  width: 6rem;
+}
+tbody td:first-child a {
+  display: inline-block;
+  color: var(--naranja);
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+tbody td:first-child a:hover {
+  text-decoration: underline;
+}
+tbody td:nth-child(3) {
+  color: var(--tinta-suave);
+}
+tfoot th,
+tfoot td {
+  font-weight: 700;
+  border-top: 1px solid var(--linea-fuerte);
+}
+tfoot td:last-child {
+  color: var(--naranja);
+  font-size: 1.2rem;
+}
+.numero {
+  text-align: right;
+}
+tbody td.numero {
+  font-weight: 700;
+}
+.paginacion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+.paginacion p {
+  margin: 0;
+  color: var(--tinta-suave);
+}
+.paginacion__botones {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ---------- Estados del pedido ---------- */
+.estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.15rem 0.8rem 0.15rem 0.65rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--c);
+  background: color-mix(in srgb, var(--c) 14%, transparent);
+  border-radius: 999px;
+}
+.estado::before {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--c);
+  border-radius: 50%;
+}
+.estado--pendiente {
+  --c: #ffb020;
+}
+.estado--pagado {
+  --c: #5eb0ff;
+}
+.estado--enviado {
+  --c: #b79cff;
+}
+.estado--entregado {
+  --c: #52c27b;
+}
+.estado--cancelado {
+  --c: #ff6b5b;
+}
+
+/* El camino del pedido: una línea con paradas. El naranja llega hasta donde va el pedido */
+.flujo {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 1.75rem 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+.flujo li {
+  position: relative;
+  padding-top: 2.1rem;
+  color: var(--tinta-suave);
+  font-weight: 500;
+}
+.flujo li::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1.1rem;
+  height: 1.1rem;
+  background: var(--fondo);
+  border: 2px solid var(--linea-fuerte);
+  border-radius: 50%;
+  z-index: 1;
+}
+.flujo li::after {
+  content: '';
+  position: absolute;
+  top: 0.45rem;
+  left: 1.1rem;
+  right: 0;
+  height: 2px;
+  background: var(--linea-fuerte);
+}
+.flujo li:last-child::after {
+  display: none;
+}
+.flujo li.hecho,
+.flujo li.actual {
+  color: var(--tinta);
+}
+.flujo li.hecho::before {
+  background: var(--naranja);
+  border-color: var(--naranja);
+}
+.flujo li.hecho::after {
+  background: var(--naranja);
+}
+.flujo li.actual {
+  font-weight: 800;
+}
+.flujo li.actual::before {
+  background: var(--naranja);
+  border-color: var(--naranja);
+  box-shadow: 0 0 0 5px rgb(255 122 47 / 0.25);
+}
+.flujo-cancelado {
+  margin: 1.5rem 0;
+  padding: 0.8rem 1.1rem;
+  color: #ffb4aa;
+  font-weight: 600;
+  background: rgb(255 107 91 / 0.12);
+  border-radius: 12px;
+}
+.datos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 1rem 2rem;
+  margin: 0 0 0.5rem;
+}
+.datos dt {
+  font-size: 0.875rem;
+  color: var(--tinta-suave);
+}
+.datos dd {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+.editor-estado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.75rem;
+  margin: 1.5rem 0 1rem;
+}
+.editor-estado select {
+  width: 12rem;
+}
+.editor-estado label {
+  margin: 0;
+  align-self: center;
+}
+
+/* ---------- Avisos ---------- */
+.aviso {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 0 1.25rem;
+  padding: 0.8rem 1.1rem;
+  border-radius: 12px;
+}
+.aviso p {
+  margin: 0;
+}
+.aviso--error {
+  color: #ffd3cd;
+  background: rgb(255 107 91 / 0.13);
+  box-shadow: inset 4px 0 0 #ff6b5b;
+}
+.aviso--ok {
+  color: #c7f0d4;
+  background: rgb(82 194 123 / 0.13);
+  box-shadow: inset 4px 0 0 #52c27b;
+}
+.aviso--info {
+  color: #cfe5ff;
+  background: rgb(94 176 255 / 0.13);
+  box-shadow: inset 4px 0 0 #5eb0ff;
+}
+
+/* ---------- Login ---------- */
+.login {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  min-height: 100vh;
+}
+.login__lado {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem;
+  overflow: hidden;
+  background: var(--panel);
+  border-right: 1px solid var(--linea);
+}
+.login__lado strong {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.login__lado strong::after {
+  content: '/pedidos';
+  color: var(--naranja);
+}
+/* Números de pedido que se van apagando: la lista de pedidos como decorado */
+.login__numeros {
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: clamp(4rem, 11vw, 8.5rem);
+  font-weight: 800;
+  font-stretch: 75%;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--naranja);
+}
+.login__numeros li:nth-child(1) {
+  opacity: 1;
+}
+.login__numeros li:nth-child(2) {
+  opacity: 0.55;
+}
+.login__numeros li:nth-child(3) {
+  opacity: 0.3;
+}
+.login__numeros li:nth-child(4) {
+  opacity: 0.14;
+}
+.login__formulario {
+  align-self: center;
+  justify-self: center;
+  width: 100%;
+  max-width: 24rem;
+  padding: 2rem 1.5rem;
+}
+.login__formulario h1 {
+  font-size: 2.6rem;
+}
+.login__formulario input {
+  margin-bottom: 1rem;
+}
+.login__formulario .boton {
+  width: 100%;
+  padding: 0.75rem 1.2rem;
+}
+
+/* ---------- Pantallas angostas ---------- */
+@media (max-width: 48rem) {
+  .login {
+    grid-template-columns: 1fr;
+  }
+  .login__lado {
+    padding: 1.5rem;
+    border-right: 0;
+    border-bottom: 1px solid var(--linea);
+  }
+  .login__numeros {
+    display: none;
+  }
+}
+@media (max-width: 40rem) {
+  .barra__contenido {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+  .barra__nav {
+    order: 3;
+    flex-basis: 100%;
+  }
+  .linea {
+    grid-template-columns: 1fr 1fr;
+  }
+  .linea > .campo:first-child {
+    grid-column: 1 / -1;
+  }
+  .linea__subtotal {
+    margin-bottom: 0.75rem;
+  }
+  .encabezado {
+    flex-wrap: wrap;
+  }
+  .flujo li {
+    font-size: 0.85rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
+/* ---------- Ejercicios ---------- */
+.pestanas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 1.5rem;
+}
+.pestana {
+  padding: 0.45rem 1rem;
+  font: inherit;
+  font-weight: 500;
+  color: var(--tinta-suave);
+  background: transparent;
+  border: 1px solid var(--linea-fuerte);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.pestana:hover {
+  color: var(--tinta);
+}
+.pestana--activa {
+  color: var(--sobre-naranja);
+  font-weight: 700;
+  background: var(--naranja);
+  border-color: var(--naranja);
+}
+.ejercicio {
+  padding: 1.5rem;
+  background: var(--panel);
+  border: 1px solid var(--linea);
+  border-radius: 18px;
+}
+.ejercicio h2 {
+  margin: 0 0 0.25rem;
+}
+.ejercicio__tema {
+  margin: 0 0 1.5rem;
+  color: var(--tinta-suave);
+}
+.ejercicio__numero {
+  margin: 0 0 1rem;
+  color: var(--naranja);
+  font-size: 5rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+.ejercicio__fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.ejercicio__fila .campo {
+  flex: 1 1 14rem;
+  margin: 0;
+}
+.ejercicio__formulario {
+  max-width: 28rem;
+}
+.ejercicio__error {
+  margin: 0.3rem 0 0;
+  color: #ffb4aa;
+  font-size: 0.9rem;
+}
+.tareas {
+  margin: 0 0 0.5rem;
+  padding: 0;
+  list-style: none;
+}
+.tarea {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  border-top: 1px solid var(--linea);
+}
+.tarea__texto {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  color: var(--tinta);
+  font-size: 1rem;
+  cursor: pointer;
+}
+.tarea__texto input {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--naranja);
+}
+.tarea--hecha .tarea__texto span {
+  color: var(--tinta-suave);
+  text-decoration: line-through;
+}
+.ejercicio code {
+  padding: 0.1rem 0.35rem;
+  background: var(--campo);
+  border-radius: 6px;
+}
