@@ -6,15 +6,19 @@ Stack: Vue 3 (`<script setup>`, Composition API) + Vite + Vue Router + Pinia.
 
 ## Cómo correrlo
 
-### Con Docker (todo junto)
+### Con Docker
+
+El front principal del proyecto es el de React. El de Vue está en el compose con el perfil `vue`, así que **no arranca con `docker compose up -d`**: hay que pedirlo.
 
 ```powershell
 cd proyecto
-docker compose up -d --build frontend-vue
+docker compose up -d                                   # el proyecto de siempre (React en el 5173)
+docker compose --profile vue up -d --build frontend-vue  # además, el front Vue en el 5174
 ```
 
-- Front Vue: http://localhost:5174
-- Front React: http://localhost:5173 (los dos usan la misma API)
+- Front React (principal): http://localhost:5173
+- Front Vue (comparación): http://localhost:5174
+- Los dos usan la misma API.
 
 `CORS_ORIGENES` en `api/.env` debe incluir `http://localhost:5174`.
 

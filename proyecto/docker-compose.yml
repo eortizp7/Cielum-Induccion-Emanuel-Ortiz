@@ -62,7 +62,10 @@ services:
       - api
 
   # El mismo panel hecho en Vue (parte 5), para comparar con el de React. Usa la misma API.
+  # Es opcional: con el perfil "vue" solo arranca si se pide (docker compose --profile vue up -d).
+  # Así "docker compose up -d" levanta el proyecto igual que siempre, con el front de React.
   frontend-vue:
+    profiles: ["vue"]
     build:
       context: ./frontend-vue
       args:
