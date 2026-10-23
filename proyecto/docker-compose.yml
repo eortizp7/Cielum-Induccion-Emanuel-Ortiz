@@ -54,14 +54,25 @@ services:
     build:
       context: ./frontend-react
       args:
-        # DirecciÃƒÂ³n de la API vista desde el navegador (por eso es localhost:3001 y no api:3000)
+        # Dirección de la API vista desde el navegador (por eso es localhost:3001 y no api:3000)
         VITE_API_URL: ${VITE_API_URL:-http://localhost:3001}
     ports:
       - "5173:80"
     depends_on:
       - api
 
-  # AutomatizaciÃƒÂ³n: recibe el webhook de la API y sincroniza con Zoho CRM
+  # El mismo panel hecho en Vue (parte 5), para comparar con el de React. Usa la misma API.
+  frontend-vue:
+    build:
+      context: ./frontend-vue
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:3001}
+    ports:
+      - "5174:80"
+    depends_on:
+      - api
+
+  # Automatización: recibe el webhook de la API y sincroniza con Zoho CRM
   n8n:
     image: docker.n8n.io/n8nio/n8n:${N8N_VERSION:-latest}
     environment:
@@ -70,12 +81,12 @@ services:
       N8N_HOST: localhost
       N8N_PORT: "5678"
       N8N_PROTOCOL: http
-      # URL pÃƒÂºblica que n8n muestra para los webhooks (la que ve tu navegador)
+      # URL pública que n8n muestra para los webhooks (la que ve tu navegador)
       N8N_WEBHOOK_URL: http://localhost:5678/
       WEBHOOK_URL: http://localhost:5678/   # nombre anterior; se deja por compatibilidad con versiones viejas
       # Cifra las credenciales guardadas. Si la cambias, se pierden las credenciales ya creadas
       N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY:?Falta N8N_ENCRYPTION_KEY en proyecto/.env}
-      # Los flujos leen estos valores con $env.NOMBRE, asÃƒÂ­ no quedan escritos en el JSON
+      # Los flujos leen estos valores con $env.NOMBRE, así no quedan escritos en el JSON
       N8N_BLOCK_ENV_ACCESS_IN_NODE: "false"
       PEDIDOS_WEBHOOK_SECRET: ${PEDIDOS_WEBHOOK_SECRET:?Falta PEDIDOS_WEBHOOK_SECRET en proyecto/.env}
       ZOHO_ACCOUNTS_URL: ${ZOHO_ACCOUNTS_URL:-https://accounts.zoho.com}
@@ -98,7 +109,7 @@ services:
       api:
         condition: service_started
 
-  # BuzÃƒÂ³n de pruebas: recibe los correos de n8n sin enviarlos a nadie (interfaz en :8025)
+  # Buzón de pruebas: recibe los correos de n8n sin enviarlos a nadie (interfaz en :8025)
   mailpit:
     image: axllent/mailpit
     environment:
